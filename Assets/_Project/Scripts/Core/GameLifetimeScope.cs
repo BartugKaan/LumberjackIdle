@@ -4,9 +4,15 @@ using VContainer.Unity;
 
 public class GameLifetimeScope : LifetimeScope
 {
+    [SerializeField] private MoneyUI moneyUI;
+    
     protected override void Configure(IContainerBuilder builder)
     {
-        // Will be registered Managers and Services that will be used in the game.
-        Debug.Log("GameLifetimeScope Configure, VContainer will register Managers and Services for the game.");
+        
+        builder.Register<ResourceManager>(Lifetime.Singleton).AsImplementedInterfaces();
+
+        builder.RegisterComponent(moneyUI);
+        
+        Debug.Log("GameLifetimeScope: All dependencies registered");
     }
 }
