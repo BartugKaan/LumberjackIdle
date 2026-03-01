@@ -7,6 +7,7 @@ namespace _Project.Scripts.Entities.States
         
         private WorkerController _controller;
         private float _chopTimer;
+        private float _shakeTimer;
 
         public ChopingState(WorkerController controller)
         {
@@ -24,6 +25,13 @@ namespace _Project.Scripts.Entities.States
         public void Execute()
         {
             _chopTimer -= Time.deltaTime;
+            _shakeTimer -= Time.deltaTime;
+
+            if (_shakeTimer <= 0f)
+            {
+                _controller.TargetTree.ShakeTree();
+                _shakeTimer = 0.5f;
+            }
 
             if (_chopTimer <= 0f)
             {
