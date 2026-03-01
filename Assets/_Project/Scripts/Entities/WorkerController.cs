@@ -1,4 +1,5 @@
 using System;
+using PrimeTween;
 using UnityEngine;
 using UnityEngine.AI;
 using VContainer;
@@ -7,7 +8,9 @@ using VContainer;
 public class WorkerController : MonoBehaviour
 {
     [SerializeField] private Transform basePoint;
+    [SerializeField] private Transform spriteTransform;
 
+    private Tween _wobbleTween;
     private IResourceManager _resourceManager;
     private IUpgradeManager _upgradeManager;
 
@@ -33,6 +36,9 @@ public class WorkerController : MonoBehaviour
         Agent = GetComponent<NavMeshAgent>();
         Agent.updateRotation = false;
         Agent.updateUpAxis = false;
+
+        if (spriteTransform == null)
+            spriteTransform = transform.Find("UI/LumberJackUI");
     }
 
     private void Start()
@@ -88,6 +94,21 @@ public class WorkerController : MonoBehaviour
             }
         }
         return nearestTree;
+    }
+
+    public void StartWobble()
+    {
+        _wobbleTween = Tween.LocalRotation(spriteTransform,
+            startValue: new Vector3(0, 0, -5f),
+            endValue: new Vector3(0, 0, 5f),
+            duration: 0.25f,
+            cycles: -1, cycleMode: CycleMode.Yoyo);
+    }
+
+    public void StopWobble()
+    {
+        _wobbleTween.Stop();
+        spriteTransform.localRotation = Quaternion.identity;
     }
 
     public void SetBasePoint(Transform point)
