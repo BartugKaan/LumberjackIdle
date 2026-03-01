@@ -9,11 +9,15 @@ public class WorkerController : MonoBehaviour
     [SerializeField] private Transform basePoint;
 
     private IResourceManager _resourceManager;
+    private IUpgradeManager _upgradeManager;
 
     [Inject]
-    public void Construct(IResourceManager resourceManager)
+    public void Construct(IResourceManager resourceManager, IUpgradeManager upgradeManager)
     {
         _resourceManager = resourceManager;
+        _upgradeManager = upgradeManager;
+        
+        _upgradeManager.OnUpgradePurchased += HandleUpgrade;
     }
 
     private IState _currentState;
@@ -39,6 +43,23 @@ public class WorkerController : MonoBehaviour
     private void Update()
     {
         _currentState?.Execute();
+    }
+    
+    private void HandleUpgrade(UpgradeData data, int newLevel)
+    {
+        if (data.upgradeType == UpgradeType.WorkerSpeed)
+        {
+            Agent.speed += data.valuePerLevel;
+            Debug.Log($"Worker Speed: {Agent.speed}");
+        }
+    }
+
+    private void OnDestroy()
+    {
+        if (_upgradeManager != null)
+        {
+            _upgradeManager.OnUpgradePurchased -= HandleUpgrade;
+        }
     }
 
     public void ChangeState(IState newState)
@@ -66,7 +87,13 @@ public class WorkerController : MonoBehaviour
 
             }
         }
-
         return nearestTree;
     }
+
+    public void SetBasePoint(Transform point)
+    {
+        basePoint = point;
+    }
+
+    
 }
