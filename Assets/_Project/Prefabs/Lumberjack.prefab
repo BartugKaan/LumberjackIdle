@@ -199,6 +199,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WorkerController
   basePoint: {fileID: 0}
   spriteTransform: {fileID: 0}
+  floatingTextPrefab: {fileID: 3880965984011345490, guid: 0c7e3d4bed5eb46ffaf4ca94a330ba55, type: 3}
 --- !u!114 &1292100514342257545
 MonoBehaviour:
   m_ObjectHideFlags: 0

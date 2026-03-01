@@ -14,8 +14,18 @@ namespace _Project.Scripts.Entities.States
         public void Enter()
         {
             _controller.LogCarrier.DepositLog();
-            _controller.ResourceManager.AddMoney(_controller.TargetTree.WoodValue);
-            Debug.Log($"State: Deposited! +{_controller.TargetTree.WoodValue} money");
+
+            int value = _controller.TargetTree.WoodValue;
+            _controller.ResourceManager.AddMoney(value);
+
+            if (_controller.FloatingTextPrefab != null)
+            {
+                var ft = Object.Instantiate(_controller.FloatingTextPrefab,
+                    _controller.transform.position, Quaternion.identity);
+                ft.Initialize($"+${value}");
+            }
+
+            Debug.Log($"State: Deposited! +{value} money");
 
             _controller.TargetTree = null;
 
