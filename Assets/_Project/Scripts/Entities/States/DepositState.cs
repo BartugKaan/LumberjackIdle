@@ -17,13 +17,7 @@ namespace _Project.Scripts.Entities.States
 
             int value = _controller.TargetTree.WoodValue;
             _controller.ResourceManager.AddMoney(value);
-
-            if (_controller.FloatingTextPrefab != null)
-            {
-                var ft = Object.Instantiate(_controller.FloatingTextPrefab,
-                    _controller.transform.position, Quaternion.identity);
-                ft.Initialize($"+${value}");
-            }
+            _controller.MoneyUI.SpawnFloatingText(value, _controller.transform.position);
 
             Debug.Log($"State: Deposited! +{value} money");
 

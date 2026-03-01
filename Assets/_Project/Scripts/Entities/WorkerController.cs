@@ -9,18 +9,19 @@ public class WorkerController : MonoBehaviour
 {
     [SerializeField] private Transform basePoint;
     [SerializeField] private Transform spriteTransform;
-    [SerializeField] private FloatingText floatingTextPrefab;
 
     private Tween _wobbleTween;
     private IResourceManager _resourceManager;
     private IUpgradeManager _upgradeManager;
+    private MoneyUI _moneyUI;
 
     [Inject]
-    public void Construct(IResourceManager resourceManager, IUpgradeManager upgradeManager)
+    public void Construct(IResourceManager resourceManager, IUpgradeManager upgradeManager, MoneyUI moneyUI)
     {
         _resourceManager = resourceManager;
         _upgradeManager = upgradeManager;
-        
+        _moneyUI = moneyUI;
+
         _upgradeManager.OnUpgradePurchased += HandleUpgrade;
     }
 
@@ -32,7 +33,7 @@ public class WorkerController : MonoBehaviour
     public Transform BasePoint => basePoint;
     
     public Tree TargetTree { get; set; }
-    public FloatingText FloatingTextPrefab => floatingTextPrefab;
+    public MoneyUI MoneyUI => _moneyUI;
 
     private void Awake()
     {
