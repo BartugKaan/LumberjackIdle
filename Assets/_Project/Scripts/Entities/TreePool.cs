@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using VContainer;
 using Random = UnityEngine.Random;
 
 public class TreePool : MonoBehaviour
@@ -15,6 +16,15 @@ public class TreePool : MonoBehaviour
     [SerializeField] private Vector2 spawnMax = new Vector2(4f, 8f);
 
     private List<Tree> _trees = new List<Tree>();
+    
+    private IUpgradeManager _upgradeManager;
+
+    [Inject]
+    public void Construct(IUpgradeManager upgradeManager)
+    {
+        _upgradeManager = upgradeManager;
+        _upgradeManager.OnUpgradePurchased += HandleUpgrade;
+    }
 
 
     private void Start()
@@ -29,6 +39,27 @@ public class TreePool : MonoBehaviour
         }
         
         Debug.Log($"TreePool: {poolSize} trees spawned");
+    }
+
+    private void HandleUpgrade(UpgradeData data, int newLevel)
+    {
+        if (data.upgradeType == UpgradeType.TreeCount)
+        {
+            int count = Mathf.RoundToInt(data.valuePerLevel);
+            for (int i = 0; i < count; i++)
+            {
+                SpawnTree();
+            }
+            Debug.Log($"TreePool: +{count} trees added. Total: {_trees.Count}");
+        }
+    }
+
+    private void SpawnTree()
+    {
+        Tree tree = Instantiate(treePrefab, transform);
+        tree.transform.position = GetRandomPosition();
+        tree.OnRegrown += HandleTreeRegrown;
+        _trees.Add(tree);
     }
 
     private void HandleTreeRegrown(Tree tree)
