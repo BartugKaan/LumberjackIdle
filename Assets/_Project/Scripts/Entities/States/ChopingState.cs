@@ -35,6 +35,7 @@ namespace _Project.Scripts.Entities.States
 
             if (_chopTimer <= 0f)
             {
+                _controller.LogCarrier.ShowLog();
                 _controller.TargetTree.Chop();
                 _controller.ChangeState(new MovingToBaseState(_controller));
             }

@@ -13,11 +13,12 @@ namespace _Project.Scripts.Entities.States
         
         public void Enter()
         {
+            _controller.LogCarrier.DepositLog();
             _controller.ResourceManager.AddMoney(_controller.TargetTree.WoodValue);
             Debug.Log($"State: Deposited! +{_controller.TargetTree.WoodValue} money");
 
             _controller.TargetTree = null;
-            
+
             _controller.ChangeState(new IdleState(_controller));
         }
 

@@ -26,6 +26,7 @@ public class WorkerController : MonoBehaviour
     private IState _currentState;
     
     public NavMeshAgent Agent { get; private set; }
+    public LogCarrier LogCarrier { get; private set; }
     public IResourceManager ResourceManager => _resourceManager;
     public Transform BasePoint => basePoint;
     
@@ -36,6 +37,7 @@ public class WorkerController : MonoBehaviour
         Agent = GetComponent<NavMeshAgent>();
         Agent.updateRotation = false;
         Agent.updateUpAxis = false;
+        LogCarrier = GetComponent<LogCarrier>();
 
         if (spriteTransform == null)
             spriteTransform = transform.Find("UI/LumberJackUI");
