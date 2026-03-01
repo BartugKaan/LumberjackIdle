@@ -1,6 +1,6 @@
 # Lumberjack Idle
 
-A 2D idle/tycoon game built with **Unity 2022** showcasing clean architecture, design patterns, and modern Unity packages. Workers autonomously chop trees, carry logs to base, and earn money — while players upgrade their lumber empire.
+A 2D idle/tycoon game built with **Unity 6** showcasing clean architecture, design patterns, and modern Unity packages. Workers autonomously chop trees, carry logs to base, and earn money — while players upgrade their lumber empire.
 
 <p align="center">
   <img src="Screenshots/gameplay-chopping.png" width="45%" alt="Worker chopping a tree" />
