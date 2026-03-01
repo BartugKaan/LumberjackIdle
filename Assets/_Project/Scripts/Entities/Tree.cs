@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using Cysharp.Threading.Tasks;
 
@@ -20,8 +21,10 @@ public class Tree : MonoBehaviour
     public Transform ChopPoint => chopPoint;
     public float ChopDuration => chopDuration;
     public int WoodValue => woodValue;
+    public event Action<Tree> OnRegrown;
 
     // ===== PUBLIC METHODS =====
+    
     
     public void Reserve()
     {
@@ -31,9 +34,15 @@ public class Tree : MonoBehaviour
     // The worker calls this WHEN CHOPPING IS FINISHED.
     public void Chop()
     {
-        spriteRenderer.color = new Color(1f, 1f, 1f, 0.3f);
+        spriteRenderer.color = new Color(1f, 1f, 1f, 0.0f);
         
         RegrowAsync().Forget();
+    }
+
+    public void ResetTree()
+    {
+        IsAvailable = true;
+        spriteRenderer.color = Color.white;
     }
 
     // ===== PRIVATE METHODS =====
@@ -45,5 +54,7 @@ public class Tree : MonoBehaviour
         // Time is up, the tree has regrown
         spriteRenderer.color = Color.white;
         IsAvailable = true;
+        
+        OnRegrown?.Invoke(this);
     }
 }
