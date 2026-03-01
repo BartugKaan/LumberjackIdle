@@ -2051,6 +2051,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WorkerSpawner
   workerPrefab: {fileID: 3162398691628284143, guid: 7e5c12603db6e4215b0491beb9339516, type: 3}
   spawnPoint: {fileID: 1073831699}
+  basePoint: {fileID: 1073831699}
 --- !u!4 &1668721888
 Transform:
   m_ObjectHideFlags: 0
