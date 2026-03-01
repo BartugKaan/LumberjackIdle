@@ -16,6 +16,7 @@ namespace _Project.Scripts.Entities.States
         {
             _controller.Agent.isStopped = false;
             _controller.Agent.SetDestination(_controller.BasePoint.position);
+            _controller.StartWobble();
             Debug.Log("State: Moving To Base");
         }
 
@@ -28,6 +29,8 @@ namespace _Project.Scripts.Entities.States
         }
 
         public void Exit()
-        { }
+        {
+            _controller.StopWobble();
+        }
     }
 }

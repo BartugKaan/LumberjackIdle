@@ -1,4 +1,5 @@
 using System;
+using PrimeTween;
 using UnityEngine;
 using Cysharp.Threading.Tasks;
 
@@ -15,6 +16,8 @@ public class Tree : MonoBehaviour
     [SerializeField] private Transform chopPoint;        // The point where the worker will stand (child object)
     [SerializeField] private SpriteRenderer spriteRenderer;
 
+    private Vector3 _originalScale;
+
     // ===== PUBLIC PROPERTIES =====
 
     public bool IsAvailable { get; private set; } = true;
@@ -22,6 +25,11 @@ public class Tree : MonoBehaviour
     public float ChopDuration => chopDuration;
     public int WoodValue => woodValue;
     public event Action<Tree> OnRegrown;
+
+    private void Awake()
+    {
+        _originalScale = transform.localScale;
+    }
 
     // ===== PUBLIC METHODS =====
     
@@ -31,17 +39,24 @@ public class Tree : MonoBehaviour
         IsAvailable = false;
     }
 
+    public void ShakeTree()
+    {
+        Tween.ShakeLocalPosition(transform, strength: new Vector3(0.05f, 0.02f, 0), duration: 0.3f);
+    }
+
     // The worker calls this WHEN CHOPPING IS FINISHED.
     public void Chop()
     {
-        spriteRenderer.color = new Color(1f, 1f, 1f, 0.0f);
-        
+        Tween.Scale(transform, endValue: 0f, duration: 0.3f);
+        Tween.Alpha(spriteRenderer, endValue: 0f, duration: 0.3f);
+
         RegrowAsync().Forget();
     }
 
     public void ResetTree()
     {
         IsAvailable = true;
+        transform.localScale = _originalScale;
         spriteRenderer.color = Color.white;
     }
 
@@ -52,6 +67,7 @@ public class Tree : MonoBehaviour
         await UniTask.WaitForSeconds(regrowDelay, cancellationToken: destroyCancellationToken);
 
         // Time is up, the tree has regrown
+        transform.localScale = _originalScale;
         spriteRenderer.color = Color.white;
         IsAvailable = true;
         

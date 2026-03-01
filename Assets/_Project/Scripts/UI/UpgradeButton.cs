@@ -1,3 +1,4 @@
+using PrimeTween;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -30,7 +31,10 @@ public class UpgradeButton : MonoBehaviour
 
     private void OnClick()
     {
-        _upgradeManager.TryPurchase(upgradeData);
+        if (_upgradeManager.TryPurchase(upgradeData))
+            Tween.PunchScale(transform, strength: new Vector3(0.2f, 0.2f, 0), duration: 0.3f);
+        else
+            Tween.ShakeLocalPosition(transform, strength: new Vector3(5f, 0, 0), duration: 0.2f);
     }
 
     private void HandleMoneyChanged(int newMoney)

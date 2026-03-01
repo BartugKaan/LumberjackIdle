@@ -1,4 +1,5 @@
 using System;
+using PrimeTween;
 using UnityEngine;
 using UnityEngine.AI;
 using VContainer;
@@ -7,32 +8,42 @@ using VContainer;
 public class WorkerController : MonoBehaviour
 {
     [SerializeField] private Transform basePoint;
+    [SerializeField] private Transform spriteTransform;
 
+    private Tween _wobbleTween;
     private IResourceManager _resourceManager;
     private IUpgradeManager _upgradeManager;
+    private MoneyUI _moneyUI;
 
     [Inject]
-    public void Construct(IResourceManager resourceManager, IUpgradeManager upgradeManager)
+    public void Construct(IResourceManager resourceManager, IUpgradeManager upgradeManager, MoneyUI moneyUI)
     {
         _resourceManager = resourceManager;
         _upgradeManager = upgradeManager;
-        
+        _moneyUI = moneyUI;
+
         _upgradeManager.OnUpgradePurchased += HandleUpgrade;
     }
 
     private IState _currentState;
     
     public NavMeshAgent Agent { get; private set; }
+    public LogCarrier LogCarrier { get; private set; }
     public IResourceManager ResourceManager => _resourceManager;
     public Transform BasePoint => basePoint;
     
     public Tree TargetTree { get; set; }
+    public MoneyUI MoneyUI => _moneyUI;
 
     private void Awake()
     {
         Agent = GetComponent<NavMeshAgent>();
         Agent.updateRotation = false;
         Agent.updateUpAxis = false;
+        LogCarrier = GetComponent<LogCarrier>();
+
+        if (spriteTransform == null)
+            spriteTransform = transform.Find("UI/LumberJackUI");
     }
 
     private void Start()
@@ -88,6 +99,21 @@ public class WorkerController : MonoBehaviour
             }
         }
         return nearestTree;
+    }
+
+    public void StartWobble()
+    {
+        _wobbleTween = Tween.LocalRotation(spriteTransform,
+            startValue: new Vector3(0, 0, -5f),
+            endValue: new Vector3(0, 0, 5f),
+            duration: 0.25f,
+            cycles: -1, cycleMode: CycleMode.Yoyo);
+    }
+
+    public void StopWobble()
+    {
+        _wobbleTween.Stop();
+        spriteTransform.localRotation = Quaternion.identity;
     }
 
     public void SetBasePoint(Transform point)
