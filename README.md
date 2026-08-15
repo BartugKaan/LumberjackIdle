@@ -1,3 +1,5 @@
+
+
 # Lumberjack Idle
 
 A 2D idle/tycoon game built with **Unity 6** showcasing clean architecture, design patterns, and modern Unity packages. Workers autonomously chop trees, carry logs to base, and earn money — while players upgrade their lumber empire.
@@ -86,7 +88,7 @@ UI components subscribe to manager events and update reactively — no polling, 
 
 | Technology | Purpose |
 |-----------|---------|
-| **Unity 2022.3 LTS** | Game engine |
+| **Unity 6** | Game engine |
 | **VContainer** | Lightweight dependency injection |
 | **PrimeTween** | High-performance tweening (animations, VFX) |
 | **UniTask** | Async/await for Unity (tree regrowth, timers) |
